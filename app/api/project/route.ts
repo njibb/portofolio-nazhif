@@ -30,6 +30,12 @@ const projectsData = [
      images: ["/agility1.png","/agility2.png","/agility3.png","/agility4.png","/agility5.png","/agility6.png","/agility7.png","/agility8.png","/agility9.png","/agility10.png"],
      description: "Agility Wear Web Project: A custom-built web application designed for browsing and purchasing athletic equipment.", 
      role: "Personal Project" },
+     { id: 15, title: "Logeeka Dashboard", 
+    category: "Web & App",
+     image: "/logeeka.png", 
+     images: ["/logeeka2.png","/logeeka3.png","/logeeka4.png","/logeeka5.png","/logeeka6.png","/logeeka7.png","/logeeka8.png","/logeeka9.png"],
+     description: "Logeeka Internal Systems: Admin Dashboard Development & Optimization.", 
+     role: "Website Developer" },
 ];
 
 export async function GET() {
