@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
 
 const projectsData = [
-  { id: 1, title: "Islamic Resource & Prayer App", 
-    category: "Web & App", 
-    image: "/aplikasirawi.png", 
-    images: ["/aplikasirawi.png", "/aplikasirawi2.png","/aplikasirawi3.png","/aplikasirawi4.png","/aplikasirawi5.png","/aplikasirawi6.png"], 
-    description: "A comprehensive mobile application providing accurate prayer schedules and a rich library of Islamic literature including Simtuddurror, Barzanji, and Diba'.", role: "Mobile Developer" },
+  { id: 1, title: "Event Highlight JA.SE.KA Reels", category: "Video Editing", video: "/jaseka.mp4", description: "Produced and edited a promotional video for the 'Jalan Sehat' community event, successfully increasing local engagement through dynamic visuals and storytelling.", role: "Chairman Karang Taruna RW 01"
+     },
   { id: 2, title: "Unasradio Official Web", category: "Web & App", image: "/unasradio1.png", images: ["/unasradio1.png","/unasradio2.png","/unasradio3.png","/unasradio4.png","/unasradio5.png","/unasradio6.png","/unasradio7.png","/unasradio8.png","/unasradio9.png"], 
     description: "The primary digital platform for Unasradio, designed to facilitate live online broadcasting and showcase program schedules.", role: "Front-End Developer" },
-  { id: 3, title: "Rentashot Platform", category: "Web & App", image: "/rentashot1.png", images: ["/rentashot1.png","/rentashot2.png","/rentashot3.png","/rentashot4.png","/rentashot5.png","/rentashot6.png","/rentashot7.png","rentashot8.png"], description: "A specialized digital platform built for a photography equipment rental service with a seamless booking flow.", role: "Web Developer" },
+  { 
+    id: 13, title: "Event Highlight JA.SE.KA part 2 Reels", category: "Video Editing", video: "/jaseka2.mp4", description: "Produced and edited a promotional video for the 'Jalan Sehat' part 2 community event, successfully increasing local engagement through dynamic visuals and storytelling.", role: "Video Editor"
+     },
   { id: 4, title: "Cyber Security Seminar", 
     category: "Public Speaker",
      image: "/mcseminarcyber1.png", 
@@ -28,8 +27,12 @@ const projectsData = [
   { id: 9, title: "Instagram Feedss Bracelet Store", category: "Design", image: "/BRACELET.jpg", images: ["/BRACELET.jpg", "/GELANG COUPLE.jpg"], description: "Visual Branding: Instagram Feed Design for a Handmade Bracelet Business.", role: "Freelance Graphic Designer" },
   { id: 10, title: "JIB airlines logo (personal project)", category: "Design", image: "/JIB airlines.png", description: "Brand Identity Design: Concept Logo for an Airline Ticketing Service (Academic Project).", role: "Freelance Graphic Designer" },
   { id: 11, title: "Cover Podcast Spotify Kisah Kasih Krisis", category: "Design", image: "/kkk.png", description: "Visual Identity: Podcast Cover Art for 'Kisah Kasih Krisis' (Stories of Love & Crisis).", role: "Vice Head of Division Creative UnasRadio" },
-  { id: 12, title: "Event Highlight Reel", category: "Video Editing", video: "/jaseka.mp4", description: "Edited dynamic highlight reels for various campus events, focusing on high-energy pacing and engaging visual transitions.", role: "Video Editor" },
-  { id: 13, title: "Event Highlight Reel", category: "Video Editing", image: "/video-highlight.jpg", description: "Edited dynamic highlight reels for various campus events, focusing on high-energy pacing and engaging visual transitions.", role: "Video Editor" },
+  { id: 12, title: "Islamic Resource & Prayer App", 
+    category: "Web & App", 
+    image: "/aplikasirawi.png", 
+    images: ["/aplikasirawi.png", "/aplikasirawi2.png","/aplikasirawi3.png","/aplikasirawi4.png","/aplikasirawi5.png","/aplikasirawi6.png"], 
+    description: "A comprehensive mobile application providing accurate prayer schedules and a rich library of Islamic literature including Simtuddurror, Barzanji, and Diba'.", role: "Mobile Developer" },
+  { id: 3, title: "Rentashot Platform", category: "Web & App", image: "/rentashot1.png", images: ["/rentashot1.png","/rentashot2.png","/rentashot3.png","/rentashot4.png","/rentashot5.png","/rentashot6.png","/rentashot7.png","rentashot8.png"], description: "A specialized digital platform built for a photography equipment rental service with a seamless booking flow.", role: "Web Developer" },
   { id: 14, title: "Agility Wear", 
     category: "Web & App",
      image: "/agility1.png", 
