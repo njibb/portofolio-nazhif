@@ -46,6 +46,7 @@ const projectsData = [
   }
 ];
 
+
 // --- KOMPONEN PEMBUNGKUS ANIMASI ---
 const FadeInSection = ({ children }: { children: React.ReactNode }) => {
   const [isVisible, setVisible] = useState(false);
@@ -84,13 +85,14 @@ export default function Portfolio() {
 
   // --- STATE UNTUK PORTOFOLIO INTERAKTIF ---
   const [activeFilter, setActiveFilter] = useState("All Projects");
-  const [selectedProject, setSelectedProject] = useState<any>(null); 
+  const [selectedProject, setSelectedProject] = useState<any>(null); // FIX: Dikembalikan ke useState yang benar
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); 
   const carouselRef = useRef<HTMLDivElement>(null);
 
   // 2. FUNGSI UNTUK MENYEDOT DATA DARI API (BACKEND)
   useEffect(() => {
     // Memanggil API yang jalan di port 5000
-    fetch('http://localhost:5000/api/projects')
+    fetch('/api/project')
       .then(res => res.json())
       .then(data => {
         // data.data karena format dari backend kita adalah { status: "success", data: [...] }
@@ -136,56 +138,83 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-white text-black font-sans selection:bg-black selection:text-white">
-      {/* SISA KODE KE BAWAHNYA SAMA PERSIS (Navbar, Hero, About, dll) */}
+     {/* 🚀 GLOBAL INTERACTIVE DOODLES (MENGAMBANG DI SELURUH WEB) 🚀 */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes floatSlow { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-35px) rotate(8deg); } }
+        @keyframes floatFast { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-45px) rotate(-12deg); } }
+        .doodle-float-1 { animation: floatSlow 4s ease-in-out infinite; pointer-events: auto; }
+        .doodle-float-2 { animation: floatFast 3s ease-in-out infinite; pointer-events: auto; }
+        .doodle-hover { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: crosshair; }
+        .doodle-hover:hover { transform: scale(1.6) rotate(15deg) !important; opacity: 1 !important; z-index: 50; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); }
+      `}} />
+
+      {/* FIX 1: z-[35] diganti jadi z-[0] biar pindah ke belakang teks. Opacity diturunin dikit biar jadi watermark manis */}
+      <div className="fixed inset-0 z-[0] overflow-hidden pointer-events-none select-none">
+        {/* Coding Doodles */}
+        <div className="absolute top-[15%] left-[8%] text-4xl md:text-5xl font-mono text-blue-500 opacity-20 doodle-float-1 doodle-hover">{'</>'}</div>
+        <div className="absolute top-[75%] right-[8%] text-4xl md:text-5xl font-mono text-pink-500 opacity-20 doodle-float-1 doodle-hover">{'{ }'}</div>
+        
+        {/* Stage / MC Doodles */}
+        <div className="absolute top-[35%] right-[10%] text-4xl md:text-5xl opacity-30 doodle-float-2 doodle-hover">🎤</div>
+        <div className="absolute bottom-[35%] left-[22%] text-4xl md:text-5xl opacity-30 doodle-float-2 doodle-hover">🎧</div>
+        
+        {/* Creative / Idea Doodles */}
+        <div className="absolute top-[55%] right-[25%] text-4xl md:text-5xl opacity-30 doodle-float-2 doodle-hover">☕</div>
+        <div className="absolute bottom-[15%] left-[10%] text-4xl md:text-5xl opacity-30 doodle-float-1 doodle-hover">💡</div>
+        <div className="absolute top-[10%] left-[45%] text-3xl md:text-4xl opacity-30 doodle-float-2 doodle-hover">✨</div>
+        <div className="absolute bottom-[5%] right-[40%] text-3xl md:text-4xl opacity-30 doodle-float-1 doodle-hover">🚀</div>
+      </div>
 
       {/* HEADER / NAVIGATION */}
       <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <span className="font-bold text-xl tracking-tighter">NAZHIF.</span>
           <div className="hidden md:flex space-x-8 text-sm font-medium">
-            <a href="#about" className="hover:underline underline-offset-4">About</a>
-            <a href="#expertise" className="hover:underline underline-offset-4">Expertise</a>
-            <a href="#portfolio" className="hover:underline underline-offset-4">Portfolio</a>
-            <a href="#contact" className="hover:underline underline-offset-4">Contact</a>
+            <a href="#about" className="hover:underline underline-offset-4 pointer-events-auto">About</a>
+            <a href="#expertise" className="hover:underline underline-offset-4 pointer-events-auto">Expertise</a>
+            <a href="#portfolio" className="hover:underline underline-offset-4 pointer-events-auto">Portfolio</a>
+            <a href="#contact" className="hover:underline underline-offset-4 pointer-events-auto">Contact</a>
           </div>
         </div>
       </nav>
 
       {/* 🌟 HERO SECTION 🌟 */}
-      <section className="relative w-full min-h-[85vh] md:min-h-screen flex items-center bg-white z-20 overflow-hidden py-12">
+      {/* FIX 2: bg-gray-50/50 diganti bg-transparent biar doodle belakang kelihatan tembus */}
+      <section className="relative w-full min-h-[85vh] md:min-h-screen flex items-center bg-transparent z-10 overflow-hidden py-12">
         <FadeInSection>
-          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
+          <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full relative z-10">
             <div className="text-center lg:text-left z-40 relative pb-16 md:pb-0">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-gray-900 drop-shadow-sm">
                 Crafting Digital & Stage Experiences. <br />  
               </h1>
               <p className="mt-6 text-lg md:text-xl text-gray-600 font-medium max-w-lg mx-auto lg:mx-0">
-                Information Systems Student | Public Speaker | Front-End Developer
+                Information Systems Student | Public Speaker | Front-End Developer | Graphic Design | Video Editor | Event Management
               </p>
             </div>
+            
             <div className="relative h-[300px] md:h-[450px] w-full flex items-center justify-center mt-8 lg:-mt-24 pb-16 md:pb-0">
               <div className="absolute bottom-4 left-[0%] lg:left-[5%] z-10">
-                <div className="w-24 md:w-36 lg:w-44 aspect-[3/4] bg-gray-100 rounded-xl border-[4px] border-white shadow-xl transform -rotate-12 hover:-translate-y-8 hover:rotate-0 hover:z-50 hover:scale-110 transition-all duration-300 ease-out overflow-hidden">
+                <div className="w-24 md:w-36 lg:w-44 aspect-[3/4] bg-white rounded-xl border-[6px] border-white shadow-[0_20px_50px_rgba(0,_0,_0,_0.08)] transform -rotate-12 hover:-translate-y-8 hover:rotate-0 hover:z-50 hover:scale-110 transition-all duration-300 ease-out overflow-hidden">
                   <img src="/dirigw1.png" alt="Portfolio 1" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" />
                 </div>
               </div>
               <div className="absolute bottom-10 left-[18%] lg:left-[22%] z-20">
-                <div className="w-24 md:w-36 lg:w-44 aspect-[3/4] bg-gray-200 rounded-xl border-[4px] border-white shadow-xl transform -rotate-6 hover:-translate-y-8 hover:rotate-0 hover:z-50 hover:scale-110 transition-all duration-300 ease-out overflow-hidden">
+                <div className="w-24 md:w-36 lg:w-44 aspect-[3/4] bg-white rounded-xl border-[6px] border-white shadow-[0_20px_50px_rgba(0,_0,_0,_0.08)] transform -rotate-6 hover:-translate-y-8 hover:rotate-0 hover:z-50 hover:scale-110 transition-all duration-300 ease-out overflow-hidden">
                   <img src="/dirigw2.png" alt="Portfolio 2" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" />
                 </div>
               </div>
               <div className="absolute bottom-14 left-1/2 transform -translate-x-1/2 z-30">
-                <div className="w-24 md:w-36 lg:w-44 aspect-[3/4] bg-gray-300 rounded-xl border-[4px] border-white shadow-xl transform hover:-translate-y-8 hover:scale-110 transition-all duration-300 ease-out overflow-hidden">
+                <div className="w-24 md:w-36 lg:w-44 aspect-[3/4] bg-white rounded-xl border-[6px] border-white shadow-[0_20px_50px_rgba(0,_0,_0,_0.08)] transform hover:-translate-y-8 hover:scale-110 transition-all duration-300 ease-out overflow-hidden">
                   <img src="/dirigw3.png" alt="Portfolio 3" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" />
                 </div>
               </div>
               <div className="absolute bottom-10 right-[18%] lg:right-[22%] z-20">
-                <div className="w-24 md:w-36 lg:w-44 aspect-[3/4] bg-gray-200 rounded-xl border-[4px] border-white shadow-xl transform rotate-6 hover:-translate-y-8 hover:rotate-0 hover:z-50 hover:scale-110 transition-all duration-300 ease-out overflow-hidden">
+                <div className="w-24 md:w-36 lg:w-44 aspect-[3/4] bg-white rounded-xl border-[6px] border-white shadow-[0_20px_50px_rgba(0,_0,_0,_0.08)] transform rotate-6 hover:-translate-y-8 hover:rotate-0 hover:z-50 hover:scale-110 transition-all duration-300 ease-out overflow-hidden">
                   <img src="/dirigw4.png" alt="Portfolio 4" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" />
                 </div>
               </div>
               <div className="absolute bottom-4 right-[0%] lg:right-[5%] z-10">
-                <div className="w-24 md:w-36 lg:w-44 aspect-[3/4] bg-gray-100 rounded-xl border-[4px] border-white shadow-xl transform rotate-12 hover:-translate-y-8 hover:rotate-0 hover:z-50 hover:scale-110 transition-all duration-300 ease-out overflow-hidden">
+                <div className="w-24 md:w-36 lg:w-44 aspect-[3/4] bg-white rounded-xl border-[6px] border-white shadow-[0_20px_50px_rgba(0,_0,_0,_0.08)] transform rotate-12 hover:-translate-y-8 hover:rotate-0 hover:z-50 hover:scale-110 transition-all duration-300 ease-out overflow-hidden">
                   <img src="/dirigw5.png" alt="Portfolio 5" className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-300" />
                 </div>
               </div>
@@ -194,20 +223,20 @@ export default function Portfolio() {
         </FadeInSection>
 
         <a href="#about" className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center gap-2 opacity-40 hover:opacity-100 transition-opacity duration-300 cursor-pointer z-30">
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-black">Scroll</span>
-          <svg className="w-5 h-5 text-black animate-bounce mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-600">Scroll</span>
+          <svg className="w-5 h-5 text-gray-600 animate-bounce mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
         </a>
       </section>
 
-    {/* ABOUT SECTION */}
-      {/* FIX: border-b-[3px] border-black sudah dihapus dari sini */}
-      <section id="about" className="bg-white relative z-20">
+      {/* ABOUT SECTION */}
+      {/* FIX 3: bg-white diganti bg-transparent biar doodle di belakang kelihatan tembus pandang */}
+      <section id="about" className="bg-transparent relative z-20">
         <FadeInSection>
-          <div className="max-w-7xl mx-auto px-6 py-20">
+          <div className="max-w-7xl mx-auto px-6 py-20 relative z-10">
             <h2 className="text-3xl font-bold mb-8 uppercase tracking-widest text-center md:text-left">About Me</h2>
-            <div className="text-lg text-gray-700 leading-relaxed max-w-4xl space-y-4">
+            <div className="text-lg text-gray-700 leading-relaxed max-w-4xl space-y-4 font-medium">
               <p>
                 Information Systems student at Universitas Nasional with a strong background in organizational management, communication, and social service. Experienced in leading youth organizations such as Chairman of Karang Taruna and Head of the Da'wah Division at IRMALA, focusing on team management and event execution.
               </p>
@@ -222,21 +251,38 @@ export default function Portfolio() {
         </FadeInSection>
       </section>
 
- {/* 🚀 MARQUEE (LET'S WORK TOGETHER) 🚀 */}
+{/* 🚀 MARQUEE (LET'S WORK TOGETHER) 🚀 */}
       <FadeInSection>
         <section className="py-12 relative bg-white flex flex-col items-center justify-center overflow-hidden min-h-[200px] w-full z-20">
+          
+          {/* CSS ANIMASI KITA TARUH LANGSUNG DI SINI BIAR PASTI TERBACA */}
+          <style dangerouslySetInnerHTML={{__html: `
+            @keyframes gerakKiri { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+            @keyframes gerakKanan { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+            .animasi-kiri { animation: gerakKiri 20s linear infinite; }
+            .animasi-kanan { animation: gerakKanan 20s linear infinite; }
+          `}} />
+
+          {/* PITA HITAM (GERAK KE KIRI) */}
           <div className="absolute bg-black text-white py-6 w-[120vw] left-1/2 transform -translate-x-1/2 -rotate-3 z-10 shadow-2xl flex overflow-hidden whitespace-nowrap">
-            <div className="flex w-max animate-marquee-right">
-              <span className="text-4xl md:text-5xl font-black tracking-widest mx-4 uppercase">LET'S WORK TOGETHER • LET'S WORK TOGETHER • </span>
-              <span className="text-4xl md:text-5xl font-black tracking-widest mx-4 uppercase">LET'S WORK TOGETHER • LET'S WORK TOGETHER • </span>
+            <div className="flex w-max animasi-kiri">
+              <span className="text-4xl md:text-5xl font-black tracking-widest mx-4 uppercase">LET&apos;S WORK TOGETHER • </span>
+              <span className="text-4xl md:text-5xl font-black tracking-widest mx-4 uppercase">LET&apos;S WORK TOGETHER • </span>
+              <span className="text-4xl md:text-5xl font-black tracking-widest mx-4 uppercase">LET&apos;S WORK TOGETHER • </span>
+              <span className="text-4xl md:text-5xl font-black tracking-widest mx-4 uppercase">LET&apos;S WORK TOGETHER • </span>
             </div>
           </div>
+
+          {/* PITA PUTIH (GERAK KE KANAN) */}
           <div className="absolute bg-white text-black py-6 w-[120vw] left-1/2 transform -translate-x-1/2 rotate-3 z-0 border-y-[3px] border-black flex overflow-hidden whitespace-nowrap">
-            <div className="flex w-max animate-marquee-left">
-              <span className="text-4xl md:text-5xl font-black tracking-widest mx-4 uppercase">LET'S WORK TOGETHER • LET'S WORK TOGETHER • </span>
-              <span className="text-4xl md:text-5xl font-black tracking-widest mx-4 uppercase">LET'S WORK TOGETHER • LET'S WORK TOGETHER • </span>
+            <div className="flex w-max animasi-kanan">
+              <span className="text-4xl md:text-5xl font-black tracking-widest mx-4 uppercase">LET&apos;S WORK TOGETHER • </span>
+              <span className="text-4xl md:text-5xl font-black tracking-widest mx-4 uppercase">LET&apos;S WORK TOGETHER • </span>
+              <span className="text-4xl md:text-5xl font-black tracking-widest mx-4 uppercase">LET&apos;S WORK TOGETHER • </span>
+              <span className="text-4xl md:text-5xl font-black tracking-widest mx-4 uppercase">LET&apos;S WORK TOGETHER • </span>
             </div>
           </div>
+
         </section>
       </FadeInSection>
 
@@ -303,104 +349,102 @@ export default function Portfolio() {
         </div>
       </section>
 
- {/* 🌟 COMPANIES / ORGANIZATIONS SECTION 🌟 */}
+{/* 🌟 COMPANIES / ORGANIZATIONS SECTION 🌟 */}
       <section className="bg-white py-24 relative z-20 overflow-hidden">
+        
+        {/* MESIN ANIMASI KHUSUS LOGO */}
+        <style dangerouslySetInnerHTML={{__html: `
+          @keyframes logoKiri { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+          @keyframes logoKanan { 0% { transform: translateX(-50%); } 100% { transform: translateX(0); } }
+          .logo-gerak-kiri { animation: logoKiri 30s linear infinite; }
+          .logo-gerak-kanan { animation: logoKanan 30s linear infinite; }
+        `}} />
+
         <FadeInSection>
           <div className="max-w-7xl mx-auto px-6 text-center mb-16 md:mb-24">
             <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight leading-tight text-black">
               Organizations & Companies <br className="hidden md:block"/> I've Worked With
             </h2>
           </div>
+          
           <div className="relative flex flex-col gap-8 md:gap-12 w-full overflow-hidden">
-            <div className="flex w-max animate-marquee-right hover:[animation-play-state:paused] transition-all">
-              <div className="flex gap-6 md:gap-10 px-3 md:px-5 items-center justify-around min-w-[100vw] md:min-w-max">
-                {[
-                  { src: "/logo-unasradio.jpg", alt: "Unasradio" },
-                  { src: "/logeeka.jpg", alt: "PT Logeeka" },
-                  { src: "/katar01.jpg", alt: "Karang Taruna" },
-                  { src: "/irmala.jpg", alt: "IRMALA" },
-                  { src: "/unasfest.jpg", alt: "Unasfest" }
-                ].map((logo, index) => (
-                  <div key={`row1-set1-${index}`} className="w-28 h-28 md:w-40 md:h-40 rounded-full border border-gray-100 flex items-center justify-center overflow-hidden p-0 shadow-sm hover:shadow-xl transition-all duration-300 flex-shrink-0 group cursor-pointer">
-                    <img src={logo.src} alt={logo.alt} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" />
-                  </div>
-                ))}
-              </div>
-              <div className="flex gap-6 md:gap-10 px-3 md:px-5 items-center justify-around min-w-[100vw] md:min-w-max">
-                {[
-                  { src: "/logo-unasradio.jpg", alt: "Unasradio" },
-                  { src: "/logeeka.jpg", alt: "PT Logeeka" },
-                  { src: "/katar01.jpg", alt: "Karang Taruna" },
-                  { src: "/irmala.jpg", alt: "IRMALA" },
-                  { src: "/unasfest.jpg", alt: "Unasfest" }
-                ].map((logo, index) => (
-                  <div key={`row1-set2-${index}`} className="w-28 h-28 md:w-40 md:h-40 rounded-full border border-gray-100 flex items-center justify-center overflow-hidden p-0 shadow-sm hover:shadow-xl transition-all duration-300 flex-shrink-0 group cursor-pointer">
-                    <img src={logo.src} alt={logo.alt} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" />
-                  </div>
-                ))}
-              </div>
-              <div className="flex gap-6 md:gap-10 px-3 md:px-5 items-center justify-around min-w-[100vw] md:min-w-max">
-                {[
-                  { src: "/logo-unasradio.jpg", alt: "Unasradio" },
-                  { src: "/logeeka.jpg", alt: "PT Logeeka" },
-                  { src: "/katar01.jpg", alt: "Karang Taruna" },
-                  { src: "/irmala.jpg", alt: "IRMALA" },
-                  { src: "/unasfest.jpg", alt: "Unasfest" }
-                ].map((logo, index) => (
-                  <div key={`row1-set2-${index}`} className="w-28 h-28 md:w-40 md:h-40 rounded-full border border-gray-100 flex items-center justify-center overflow-hidden p-0 shadow-sm hover:shadow-xl transition-all duration-300 flex-shrink-0 group cursor-pointer">
-                    <img src={logo.src} alt={logo.alt} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" />
-                  </div>
-                ))}
-              </div>
+            
+            {/* BARIS 1 (ATAS): GERAK KE KANAN */}
+            <div className="flex w-max logo-gerak-kanan hover:[animation-play-state:paused] transition-all">
+              {/* Diulang 2x biar putarannya nyambung terus */}
+              {[1, 2].map((set) => (
+                <div key={`row1-set${set}`} className="flex gap-6 md:gap-10 px-3 md:px-5 items-center justify-around min-w-[100vw] md:min-w-max">
+                  {[
+                    { src: "/logo-unasradio.jpg", alt: "Unasradio" },
+                    { src: "/logeeka.jpg", alt: "PT Logeeka" },
+                    { src: "/katar01.jpg", alt: "Karang Taruna" },
+                    { src: "/irmala.jpg", alt: "IRMALA" },
+                    { src: "/unasfest.jpg", alt: "Unasfest" },
+                    { src: "/logo-unasradio.jpg", alt: "Unasradio" },
+                    { src: "/logeeka.jpg", alt: "PT Logeeka" },
+                    { src: "/katar01.jpg", alt: "Karang Taruna" },
+                    { src: "/irmala.jpg", alt: "IRMALA" },
+                    { src: "/unasfest.jpg", alt: "Unasfest" },
+                     { src: "/logo-unasradio.jpg", alt: "Unasradio" },
+                    { src: "/logeeka.jpg", alt: "PT Logeeka" },
+                    { src: "/katar01.jpg", alt: "Karang Taruna" },
+                    { src: "/irmala.jpg", alt: "IRMALA" },
+                    { src: "/unasfest.jpg", alt: "Unasfest" },
+                    { src: "/logo-unasradio.jpg", alt: "Unasradio" },
+                    { src: "/logeeka.jpg", alt: "PT Logeeka" },
+                    { src: "/katar01.jpg", alt: "Karang Taruna" },
+                    { src: "/irmala.jpg", alt: "IRMALA" },
+                    { src: "/unasfest.jpg", alt: "Unasfest" }
+                  ].map((logo, index) => (
+                    <div key={`logo1-${set}-${index}`} className="w-28 h-28 md:w-40 md:h-40 rounded-full border border-gray-100 flex items-center justify-center overflow-hidden p-0 shadow-sm hover:shadow-xl transition-all duration-300 flex-shrink-0 group cursor-pointer">
+                      <img src={logo.src} alt={logo.alt} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" />
+                    </div>
+                  ))}
+                </div>
+              ))}
             </div>
-            <div className="flex w-max animate-marquee-left hover:[animation-play-state:paused] transition-all mt-4 md:mt-6">
-              <div className="flex gap-6 md:gap-10 px-3 md:px-5 items-center justify-around min-w-[100vw] md:min-w-max">
-                {[
-                  { src: "/unasfest.jpg", alt: "Unasfest" },
-                  { src: "/irmala.jpg", alt: "IRMALA" },
-                  { src: "/katar01.jpg", alt: "Karang Taruna" },
-                  { src: "/logeeka.jpg", alt: "PT Logeeka" },
-                  { src: "/logo-unasradio.jpg", alt: "Unasradio" }
-                ].map((logo, index) => (
-                  <div key={`row2-set1-${index}`} className="w-28 h-28 md:w-40 md:h-40 rounded-full border border-gray-100 flex items-center justify-center overflow-hidden p-0 shadow-sm hover:shadow-xl transition-all duration-300 flex-shrink-0 group cursor-pointer">
-                    <img src={logo.src} alt={logo.alt} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" />
-                  </div>
-                ))}
-              </div>
-              
-              <div className="flex gap-6 md:gap-10 px-3 md:px-5 items-center justify-around min-w-[100vw] md:min-w-max">
-                {[
-                  { src: "/unasfest.jpg", alt: "Unasfest" },
-                  { src: "/irmala.jpg", alt: "IRMALA" },
-                  { src: "/katar01.jpg", alt: "Karang Taruna" },
-                  { src: "/logeeka.jpg", alt: "PT Logeeka" },
-                  { src: "/logo-unasradio.jpg", alt: "Unasradio" }
-                ].map((logo, index) => (
-                  <div key={`row2-set2-${index}`} className="w-28 h-28 md:w-40 md:h-40 rounded-full border border-gray-100 flex items-center justify-center overflow-hidden p-0 shadow-sm hover:shadow-xl transition-all duration-300 flex-shrink-0 group cursor-pointer">
-                    <img src={logo.src} alt={logo.alt} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" />
-                  </div>
-                ))}
-              </div>
-              <div className="flex gap-6 md:gap-10 px-3 md:px-5 items-center justify-around min-w-[100vw] md:min-w-max">
-                {[
-                  { src: "/unasfest.jpg", alt: "Unasfest" },
-                  { src: "/irmala.jpg", alt: "IRMALA" },
-                  { src: "/katar01.jpg", alt: "Karang Taruna" },
-                  { src: "/logeeka.jpg", alt: "PT Logeeka" },
-                  { src: "/logo-unasradio.jpg", alt: "Unasradio" }
-                ].map((logo, index) => (
-                  <div key={`row2-set2-${index}`} className="w-28 h-28 md:w-40 md:h-40 rounded-full border border-gray-100 flex items-center justify-center overflow-hidden p-0 shadow-sm hover:shadow-xl transition-all duration-300 flex-shrink-0 group cursor-pointer">
-                    <img src={logo.src} alt={logo.alt} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" />
-                  </div>
-                ))}
-              </div>
+
+            {/* BARIS 2 (BAWAH): GERAK KE KIRI */}
+            <div className="flex w-max logo-gerak-kiri hover:[animation-play-state:paused] transition-all mt-4 md:mt-6">
+              {/* Diulang 2x biar putarannya nyambung terus */}
+              {[1, 2].map((set) => (
+                <div key={`row2-set${set}`} className="flex gap-6 md:gap-10 px-3 md:px-5 items-center justify-around min-w-[100vw] md:min-w-max">
+                  {[
+                  { src: "/logo-unasradio.jpg", alt: "Unasradio" },
+                    { src: "/logeeka.jpg", alt: "PT Logeeka" },
+                    { src: "/katar01.jpg", alt: "Karang Taruna" },
+                    { src: "/irmala.jpg", alt: "IRMALA" },
+                    { src: "/unasfest.jpg", alt: "Unasfest" },
+                    { src: "/logo-unasradio.jpg", alt: "Unasradio" },
+                    { src: "/logeeka.jpg", alt: "PT Logeeka" },
+                    { src: "/katar01.jpg", alt: "Karang Taruna" },
+                    { src: "/irmala.jpg", alt: "IRMALA" },
+                    { src: "/unasfest.jpg", alt: "Unasfest" },
+                     { src: "/logo-unasradio.jpg", alt: "Unasradio" },
+                    { src: "/logeeka.jpg", alt: "PT Logeeka" },
+                    { src: "/katar01.jpg", alt: "Karang Taruna" },
+                    { src: "/irmala.jpg", alt: "IRMALA" },
+                    { src: "/unasfest.jpg", alt: "Unasfest" },
+                    { src: "/logo-unasradio.jpg", alt: "Unasradio" },
+                    { src: "/logeeka.jpg", alt: "PT Logeeka" },
+                    { src: "/katar01.jpg", alt: "Karang Taruna" },
+                    { src: "/irmala.jpg", alt: "IRMALA" },
+                    { src: "/unasfest.jpg", alt: "Unasfest" }
+                  ].map((logo, index) => (
+                    <div key={`logo2-${set}-${index}`} className="w-28 h-28 md:w-40 md:h-40 rounded-full border border-gray-100 flex items-center justify-center overflow-hidden p-0 shadow-sm hover:shadow-xl transition-all duration-300 flex-shrink-0 group cursor-pointer">
+                      <img src={logo.src} alt={logo.alt} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-300" />
+                    </div>
+                  ))}
+                </div>
+              ))}
             </div>
+
           </div>
         </FadeInSection>
       </section>
 
       {/* 🌟 NEW INTERACTIVE PORTFOLIO SECTION 🌟 */}
-      <section id="portfolio" className="relative z-20 py-24 bg-gray-50/50">
+      <section id="portfolio" className="relative z-20 py-24 bg-transparent-50/50">
         <div className="max-w-7xl mx-auto px-6">
           <FadeInSection>
             {/* Judul & Filter */}
@@ -411,8 +455,7 @@ export default function Portfolio() {
               
               {/* Kategori Filter */}
               <div className="flex flex-wrap justify-center gap-4 bg-white px-6 py-3 rounded-full shadow-sm border border-gray-100">
-                {/* FIX: Daftar kategori disesuaikan dengan data backend yang baru */}
-                {["All Projects", "Web & App", "Design", "Event Management", "Video Editing"].map((category) => (
+                {["All Projects", "Web & App", "Design", "Video Editing", "Event Management", "Public Speaker"].map((category) => (
                   <button
                     key={category}
                     onClick={() => setActiveFilter(category)}
@@ -442,23 +485,21 @@ export default function Portfolio() {
               </button>
 
               {/* Area Slider Utama */}
-              {/* Area Slider Utama */}
               <div 
                 ref={carouselRef} 
-                // Ditambah items-center biar sejajar di tengah
                 className="flex overflow-x-auto gap-6 hide-scrollbar snap-x snap-mandatory py-8 px-4 items-center" 
               >
                 {filteredProjects.map((project) => (
                   <div 
                     key={project.id}
-                    onClick={() => setSelectedProject(project)}
-                    // FIX: Kotak diperkecil! Dari min-w-[400px] menjadi w-[260px] md:w-[300px]
+                    onClick={() => {
+                    setSelectedProject(project);
+                    setCurrentImageIndex(0); 
+                     }}
                     className="w-[260px] md:w-[300px] aspect-[4/5] bg-gray-100 rounded-3xl overflow-hidden relative snap-center cursor-pointer shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group flex-shrink-0 border-4 border-white"
                   >
-                    {/* Gambar dibiarkan object-contain dengan padding p-2 biar pas */}
                     <img src={project.image} alt={project.title} className="w-full h-full object-contain p-2 grayscale group-hover:grayscale-0 transition-all duration-500 bg-white" />
                     
-                    {/* Overlay Hitam saat di-hover (Teks juga sedikit disesuaikan ukurannya) */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                       <span className="text-white/80 text-[10px] font-bold tracking-widest uppercase mb-2">{project.category}</span>
                       <h3 className="text-white font-extrabold text-lg md:text-xl leading-tight">{project.title}</h3>
@@ -480,17 +521,15 @@ export default function Portfolio() {
         </div>
       </section>
 
-     
-
       {/* 🌟 MODAL / POP-UP DETAIL PROJECT 🌟 */}
       {selectedProject && (
         <div 
           className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md transition-all duration-300"
-          onClick={() => setSelectedProject(null)} // Klik background hitam untuk tutup
+          onClick={() => setSelectedProject(null)} 
         >
           <div 
             className="bg-white rounded-3xl max-w-5xl w-full max-h-[90vh] overflow-y-auto flex flex-col md:flex-row relative shadow-2xl transform transition-all animate-in fade-in zoom-in-95 duration-300"
-            onClick={e => e.stopPropagation()} // Mencegah klik di dalam modal ikut menutup
+            onClick={e => e.stopPropagation()} 
           >
             {/* Tombol Tutup (X) */}
             <button 
@@ -500,9 +539,57 @@ export default function Portfolio() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
 
-            {/* Gambar Modal */}
-            <div className="w-full md:w-1/2 h-[300px] md:h-auto bg-gray-100">
-              <img src={selectedProject.image} alt={selectedProject.title} className="w-full h-full object-contain" />
+            {/* Gambar Modal dengan Fitur Carousel (BARU) */}
+            <div className="w-full md:w-1/2 md:h-auto bg-gray-100 flex items-center justify-center p-12 md:p-16 relative group">
+              {/* Cek apakah proyek ini punya array 'images' dan isinya lebih dari 1 */}
+              {selectedProject.images && selectedProject.images.length > 1 ? (
+                <>
+                  <img 
+                    src={selectedProject.images[currentImageIndex]} 
+                    alt={`${selectedProject.title} - Slide ${currentImageIndex + 1}`} 
+                    className="w-full h-auto max-h-[75vh] object-contain rounded-2xl shadow-xl border border-gray-100 transition-all duration-300" 
+                  />
+                  
+                  {/* Tombol Kiri Carousel */}
+                  <button 
+                    onClick={(e) => { 
+                      e.stopPropagation(); 
+                      setCurrentImageIndex(prev => prev === 0 ? selectedProject.images.length - 1 : prev - 1); 
+                    }}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-black p-3 rounded-full shadow-2xl opacity-0 group-hover:opacity-100 transition-all z-10"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" /></svg>
+                  </button>
+
+                  {/* Tombol Kanan Carousel */}
+                  <button 
+                    onClick={(e) => { 
+                      e.stopPropagation(); 
+                      setCurrentImageIndex(prev => prev === selectedProject.images.length - 1 ? 0 : prev + 1); 
+                    }}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-black p-3 rounded-full shadow-2xl opacity-0 group-hover:opacity-100 transition-all z-10"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
+                  </button>
+
+                  {/* Indikator Titik (Dots) di Bawah */}
+                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+                    {selectedProject.images.map((_: any, idx: number) => (
+                      <div 
+                        key={idx} 
+                        className={`h-2.5 rounded-full transition-all duration-300 ${idx === currentImageIndex ? 'w-8 bg-black' : 'w-2.5 bg-gray-400'}`} 
+                      />
+                    ))}
+                  </div>
+                </>
+              ) : (
+                /* Fallback: Kalau gambarnya cuma 1, tampilkan normal tanpa tombol */
+                <img 
+                  src={selectedProject.image} 
+                  alt={selectedProject.title} 
+                  className="w-full h-auto max-h-[75vh] object-contain rounded-2xl shadow-xl border border-gray-100" 
+                />
+              )}
             </div>
 
             {/* Konten Text Modal */}
