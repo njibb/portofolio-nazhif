@@ -443,7 +443,7 @@ export default function Portfolio() {
         </FadeInSection>
       </section>
 
-      {/* 🌟 NEW INTERACTIVE PORTFOLIO SECTION 🌟 */}
+    {/* 🌟 NEW INTERACTIVE PORTFOLIO SECTION 🌟 */}
       <section id="portfolio" className="relative z-20 py-24 bg-transparent-50/50">
         <div className="max-w-7xl mx-auto px-6">
           <FadeInSection>
@@ -498,7 +498,12 @@ export default function Portfolio() {
                      }}
                     className="w-[260px] md:w-[300px] aspect-[4/5] bg-gray-100 rounded-3xl overflow-hidden relative snap-center cursor-pointer shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 group flex-shrink-0 border-4 border-white"
                   >
-                    <img src={project.image} alt={project.title} className="w-full h-full object-contain p-2 grayscale group-hover:grayscale-0 transition-all duration-500 bg-white" />
+                    {/* JIKA ADA VIDEO, MUTERIN VIDEO (TANPA SUARA BIAR KEREN). JIKA NGGAK ADA, TAMPILIN GAMBAR */}
+                    {project.video ? (
+                      <video src={project.video} autoPlay loop muted playsInline className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 bg-black" />
+                    ) : (
+                      <img src={project.image} alt={project.title} className="w-full h-full object-contain p-2 grayscale group-hover:grayscale-0 transition-all duration-500 bg-white" />
+                    )}
                     
                     <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                       <span className="text-white/80 text-[10px] font-bold tracking-widest uppercase mb-2">{project.category}</span>
@@ -539,11 +544,22 @@ export default function Portfolio() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
 
-            {/* Gambar Modal dengan Fitur Carousel (BARU) */}
+            {/* Gambar/Video Modal (SUDAH MENDUKUNG VIDEO) */}
             <div className="w-full md:w-1/2 md:h-auto bg-gray-100 flex items-center justify-center p-12 md:p-16 relative group">
-              {/* Cek apakah proyek ini punya array 'images' dan isinya lebih dari 1 */}
-              {selectedProject.images && selectedProject.images.length > 1 ? (
-                <>
+              
+              {/* 1. CEK DULU: APAKAH INI VIDEO? */}
+              {selectedProject.video ? (
+                <video 
+                  src={selectedProject.video} 
+                  controls 
+                  autoPlay 
+                  className="w-full h-auto max-h-[75vh] bg-black object-contain rounded-2xl shadow-xl border border-gray-100" 
+                />
+              ) : 
+              
+              /* 2. KALAU BUKAN VIDEO, CEK APAKAH GAMBARNYA LEBIH DARI SATU? (CAROUSEL) */
+              selectedProject.images && selectedProject.images.length > 1 ? (
+                <div className="relative w-full h-full flex items-center justify-center">
                   <img 
                     src={selectedProject.images[currentImageIndex]} 
                     alt={`${selectedProject.title} - Slide ${currentImageIndex + 1}`} 
@@ -551,24 +567,12 @@ export default function Portfolio() {
                   />
                   
                   {/* Tombol Kiri Carousel */}
-                  <button 
-                    onClick={(e) => { 
-                      e.stopPropagation(); 
-                      setCurrentImageIndex(prev => prev === 0 ? selectedProject.images.length - 1 : prev - 1); 
-                    }}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-black p-3 rounded-full shadow-2xl opacity-0 group-hover:opacity-100 transition-all z-10"
-                  >
+                  <button onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(prev => prev === 0 ? selectedProject.images.length - 1 : prev - 1); }} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-black p-3 rounded-full shadow-2xl opacity-0 group-hover:opacity-100 transition-all z-10">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" /></svg>
                   </button>
 
                   {/* Tombol Kanan Carousel */}
-                  <button 
-                    onClick={(e) => { 
-                      e.stopPropagation(); 
-                      setCurrentImageIndex(prev => prev === selectedProject.images.length - 1 ? 0 : prev + 1); 
-                    }}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-black p-3 rounded-full shadow-2xl opacity-0 group-hover:opacity-100 transition-all z-10"
-                  >
+                  <button onClick={(e) => { e.stopPropagation(); setCurrentImageIndex(prev => prev === selectedProject.images.length - 1 ? 0 : prev + 1); }} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-black p-3 rounded-full shadow-2xl opacity-0 group-hover:opacity-100 transition-all z-10">
                     <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
                   </button>
 
@@ -581,7 +585,7 @@ export default function Portfolio() {
                       />
                     ))}
                   </div>
-                </>
+                </div>
               ) : (
                 /* Fallback: Kalau gambarnya cuma 1, tampilkan normal tanpa tombol */
                 <img 
