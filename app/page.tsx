@@ -619,6 +619,53 @@ export default function Portfolio() {
         </div>
       )}
 
+      {/* 🟢 FINAL CTA SECTION (AVAILABLE FOR HIRE) 🟢 */}
+      <section className="relative z-20 py-24 bg-white border-t border-gray-100 overflow-hidden">
+        <FadeInSection>
+          <div className="max-w-5xl mx-auto px-6 text-center">
+            {/* Status Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-50 border border-green-100 mb-8">
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+              </span>
+              <span className="text-xs font-bold uppercase tracking-widest text-green-700">
+                Available for Freelance & Internships
+              </span>
+            </div>
+
+            {/* Main Text */}
+            <h2 className="text-4xl md:text-6xl font-black leading-tight tracking-tighter text-black mb-6">
+              Looking for a developer who can <br className="hidden md:block" /> 
+              also <span className="text-blue-600 underline decoration-wavy underline-offset-8 decoration-2">MC your event</span>?
+            </h2>
+            
+            <p className="text-xl md:text-2xl font-medium text-gray-500 mb-12 max-w-2xl mx-auto">
+              You've found him. Let's combine technical excellence with professional stage presence.
+            </p>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col md:flex-row items-center justify-center gap-4">
+              <a 
+                href="https://wa.me/6281511591083" 
+                target="_blank"
+                className="w-full md:w-auto px-10 py-5 bg-black text-white rounded-full font-bold text-lg hover:scale-105 transition-all shadow-xl hover:shadow-black/20"
+              >
+                Let's Work Together
+              </a>
+            </div>
+          </div>
+        </FadeInSection>
+
+        {/* Aksesori Doodle Tambahan Khusus Section Ini */}
+        <div className="absolute top-10 left-[10%] opacity-10 -rotate-12 hidden lg:block">
+          <span className="text-8xl font-black">?</span>
+        </div>
+        <div className="absolute bottom-10 right-[10%] opacity-10 rotate-12 hidden lg:block">
+          <span className="text-8xl font-black">!</span>
+        </div>
+      </section>
+
       {/* FOOTER / CONTACT SECTION */}
       <footer id="contact" className="bg-black text-white relative z-20 border-t-[3px] border-white">
         <FadeInSection>
