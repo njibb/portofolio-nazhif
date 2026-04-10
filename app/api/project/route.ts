@@ -23,7 +23,13 @@ const projectsData = [
   { id: 10, title: "JIB airlines logo (personal project)", category: "Design", image: "/JIB airlines.png", description: "Brand Identity Design: Concept Logo for an Airline Ticketing Service (Academic Project).", role: "Freelance Graphic Designer" },
   { id: 11, title: "Cover Podcast Spotify Kisah Kasih Krisis", category: "Design", image: "/kkk.png", description: "Visual Identity: Podcast Cover Art for 'Kisah Kasih Krisis' (Stories of Love & Crisis).", role: "Vice Head of Division Creative UnasRadio" },
   { id: 12, title: "Event Highlight Reel", category: "Video Editing", image: "/video-highlight.jpg", description: "Edited dynamic highlight reels for various campus events, focusing on high-energy pacing and engaging visual transitions.", role: "Video Editor" },
-  { id: 13, title: "Event Highlight Reel", category: "Video Editing", image: "/video-highlight.jpg", description: "Edited dynamic highlight reels for various campus events, focusing on high-energy pacing and engaging visual transitions.", role: "Video Editor" }
+  { id: 13, title: "Event Highlight Reel", category: "Video Editing", image: "/video-highlight.jpg", description: "Edited dynamic highlight reels for various campus events, focusing on high-energy pacing and engaging visual transitions.", role: "Video Editor" },
+  { id: 14, title: "Agility Wear", 
+    category: "Web & App",
+     image: "/agility1.png", 
+     images: ["/agility1.png","/agility2.png","/agility3.png","/agility4.png","/agility5.png","/agility6.png","/agility7.png","/agility8.png","/agility9.png","/agility10.png"],
+     description: "Agility Wear Web Project: A custom-built web application designed for browsing and purchasing athletic equipment.", 
+     role: "Personal Project" },
 ];
 
 export async function GET() {
